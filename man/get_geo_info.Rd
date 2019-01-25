@@ -12,13 +12,13 @@ get_geo_info(.Data = NULL, .longitude = NULL, .latitude = NULL,
 You can either specify an input data.table with columns named \code{longitude}
 and \code{latitude} or pass on two equal-length vectors to \code{.longitude} and \code{.latitude}.}
 
-\item{.longitude}{(numeric vector) \cr Longitude vector.}
+\item{.longitude}{Numeric vector of longitudes.}
 
-\item{.latitude}{(numeric vector) Latitude vector.}
+\item{.latitude}{Numeric vector of latitudes.}
 
 \item{.countries}{A list with geographic data from \code{\link[raster:getData]{raster::getData()}}.}
 
-\item{.sites}{(SpatialPolygons object) \cr
+\item{.sites}{SpatialPolygons object.
 Spatial object to test if points lie inside sites.}
 }
 \value{

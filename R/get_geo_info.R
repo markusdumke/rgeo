@@ -4,12 +4,12 @@
 #' from coordinates.
 #'
 #' @param .Data A data.table.
-#'   You can either specify an input data.table with columns named `longitude`
-#'   and `latitude` or pass on two equal-length vectors to `.longitude` and `.latitude`.
-#' @param .longitude (numeric vector) \cr Longitude vector.
-#' @param .latitude (numeric vector) Latitude vector.
-#' @param .sites (SpatialPolygons object) \cr
-#'   Spatial object to test if points lie inside sites.
+#'        You can either specify an input data.table with columns named `longitude`
+#'        and `latitude` or pass on two equal-length vectors to `.longitude` and `.latitude`.
+#' @param .longitude Numeric vector of longitudes.
+#' @param .latitude Numeric vector of latitudes.
+#' @param .sites SpatialPolygons object.
+#'        Spatial object to test if points lie inside sites.
 #' @inheritParams get_geographic_data
 #'
 #' @return A data.table with new columns for the geographic informations.

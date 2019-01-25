@@ -17,5 +17,6 @@ Imports:
     data.table,
     lest,
     magrittr,
+    rgdal,
     sp,
     stringr
