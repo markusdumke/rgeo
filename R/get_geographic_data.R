@@ -3,7 +3,8 @@
 #' @param .Data A data.table containing latitude and longitude columns.
 #' @param .countries A list with geographic data from [raster::getData()].
 #'
-#' @return a list containing named entries NAME_0, NAME_1, NAME_2, NAME_3, NAME_4. See [raster::getData()].
+#' @return A list containing named entries NAME_0, NAME_1, NAME_2, NAME_3, NAME_4.
+#'         See [raster::getData()].
 #'
 #' @export
 #' @import data.table
@@ -26,7 +27,7 @@ get_geographic_data <- function(.Data, .countries = list()) {
 
   # which Land/Bundesland/Kreis/Gemeinde (if any) contains each sighting
   # store the the name in a list, initialize with NAs
-  empty <- rep(NA, nrow(data))
+  empty <- rep(NA_character_, NROW(.Data))
   res <- list(NAME_0 = empty, NAME_1 = empty, NAME_2 = empty,
               NAME_3 = empty, NAME_4 = empty)
 
