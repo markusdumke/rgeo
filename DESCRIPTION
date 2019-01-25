@@ -1,0 +1,21 @@
+Package: rgeo
+Title: Extract Geographic Information from Coordinates
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Markus",
+           family = "Dumke",
+           role = c("aut", "cre"),
+           email = "markusdumke@gmail.com")
+Description: Extract Geographic Information from Coordinates.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.0
+Imports: 
+    checkmate,
+    data.table,
+    lest,
+    magrittr,
+    sp,
+    stringr
