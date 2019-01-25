@@ -42,7 +42,7 @@ get_geo_info <- function(.Data = NULL,
   }
 
   # Get geographic units
-  geo_info <- get_geographic_data(.Data, countries = .countries)
+  geo_info <- get_geographic_data(.Data, .countries = .countries)
 
   Data <- .Data %>%
     .[, Land := geo_info$NAME_0] %>%
@@ -53,7 +53,7 @@ get_geo_info <- function(.Data = NULL,
 
   # Get TK25 info
   tk25.number <- get_tk25_number(Data$latitude, Data$longitude)
-  tk25.info <- get_tk25_info(tk25.number, quadrant = NULL)
+  tk25.info <- get_tk25_info(tk25.number, .quadrant = NULL)
 
   Data <- Data %>%
     .[, TK25 := stringr::str_c(tk25.info$number, " ", tk25.info$name)] %>%
