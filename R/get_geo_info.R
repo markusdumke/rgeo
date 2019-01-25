@@ -52,16 +52,16 @@ get_geo_info <- function(.Data = NULL,
     .[, Ort := geo_info$NAME_4]
 
   # Get TK25 info
-  tk25.number <- get_tk25_number(Data$latitude, Data$longitude)
+  tk25.number <- get_tk25_number(.latitude = Data$latitude, .longitude = Data$longitude)
   tk25.info <- get_tk25_info(tk25.number, .quadrant = NULL)
 
   Data <- Data %>%
     .[, TK25 := stringr::str_c(tk25.info$number, " ", tk25.info$name)] %>%
     .[, TK25_number := tk25.info$number] %>%
-    .[, TK25_Quadrant_number := get_tk25_quadrant_number(latitude,
-                                                         longitude,
-                                                         tk25.info$center.lat,
-                                                         tk25.info$center.lng)] %>%
+    .[, TK25_Quadrant_number := get_tk25_quadrant_number(.latitude = latitude,
+                                                         .longitude = longitude,
+                                                         .tk25.center.latitude = tk25.info$center.lat,
+                                                         .tk25.center.longitude = tk25.info$center.lng)] %>%
     .[, TK25_Quadrant := stringr::str_c(tk25.info$number, "_", TK25_Quadrant_number, " ", tk25.info$name)]
 
   # # Extract site info

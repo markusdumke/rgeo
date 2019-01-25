@@ -147,19 +147,19 @@ get_tk25_name <- function(.tk25.number) {
 get_tk25_info <- function(.tk25.number, .quadrant = NULL) {
   if (isTRUE(.quadrant)) {
     split.string <- stringr::str_split(.tk25.number, "_", simplify = TRUE)
-    tk25.number <- split.string[, 1]
-    quadrant <- split.string[, 2]
+    .tk25.number <- split.string[, 1]
+    .quadrant <- split.string[, 2]
   }
-  df <- get_tk25_coordinates(tk25.number, quadrant)
-  df$name <- get_tk25_name(tk25.number)
+  df <- get_tk25_coordinates(.tk25.number, .quadrant)
+  df$name <- get_tk25_name(.tk25.number)
 
-  if (!is.null(quadrant)) {
-    quadrant <- stringr::str_c(" Q", df$quadrant.number)
+  if (!is.null(.quadrant)) {
+    .quadrant <- stringr::str_c(" Q", df$quadrant.number)
   } else {
-    quadrant <- ""
+    .quadrant <- ""
   }
 
-  df$full.name <- stringr::str_c( df$number, quadrant, " ",  df$name)
+  df$full.name <- stringr::str_c( df$number, .quadrant, " ",  df$name)
   df
 }
 

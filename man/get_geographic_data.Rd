@@ -12,7 +12,8 @@ get_geographic_data(.Data, .countries = list())
 \item{.countries}{A list with geographic data from \code{\link[raster:getData]{raster::getData()}}.}
 }
 \value{
-a list containing named entries NAME_0, NAME_1, NAME_2, NAME_3, NAME_4. See \code{\link[raster:getData]{raster::getData()}}.
+A list containing named entries NAME_0, NAME_1, NAME_2, NAME_3, NAME_4.
+See \code{\link[raster:getData]{raster::getData()}}.
 }
 \description{
 Get geographic information for coordinates
