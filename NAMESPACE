@@ -3,6 +3,7 @@
 export(convert_coordinates)
 export(get_geo_info)
 export(get_geographic_data)
+export(get_naturraum)
 export(get_tk25)
 export(get_tk25_coordinates)
 export(get_tk25_info)
