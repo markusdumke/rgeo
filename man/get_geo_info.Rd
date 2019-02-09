@@ -4,17 +4,17 @@
 \alias{get_geo_info}
 \title{Get geographic information for coordinates}
 \usage{
-get_geo_info(.Data = NULL, .longitude = NULL, .latitude = NULL,
-  .countries = list(), ...)
+get_geo_info(.Data = NULL, .latitude = NULL, .longitude = NULL,
+  .countries = list())
 }
 \arguments{
 \item{.Data}{A data.table.
 You can either specify an input data.table with columns named \code{longitude}
 and \code{latitude} or pass on two equal-length vectors to \code{.longitude} and \code{.latitude}.}
 
-\item{.longitude}{Numeric vector of longitudes.}
-
 \item{.latitude}{Numeric vector of latitudes.}
+
+\item{.longitude}{Numeric vector of longitudes.}
 
 \item{.countries}{A list with geographic data from \code{\link[raster:getData]{raster::getData()}}.}
 

@@ -1,6 +1,6 @@
 #' Get geographic information for coordinates
 #'
-#' @param .Data A data.table containing latitude and longitude columns.
+#' @inheritParams get_geo_info
 #' @param .countries A list with geographic data from [raster::getData()].
 #'
 #' @return A list containing named entries NAME_0, NAME_1, NAME_2, NAME_3, NAME_4.
@@ -13,50 +13,39 @@
 #'
 #' @examples
 #' library(data.table)
-#' data <- data.table(latitude = 48, longitude = 11)
+#' Data <- data.table(latitude = 48:50, longitude = 11:13)
 #' geographic_data_de <- raster::getData("GADM", country = "DE", level = 2)
-#' get_geographic_data(data, .countries = list(geographic_data_de))
+#' get_geographic_data(Data, .countries = list(geographic_data_de))
 #' file.remove("GADM_2.8_DEU_adm2.rds")
-get_geographic_data <- function(.Data, .countries = list()) {
+get_geographic_data <- function(.Data = NULL, .latitude = NULL, .longitude = NULL, .countries = list()) {
 
-  # make SpatialPointsDataFrame
-  data_geo <- .Data %>% copy
-  sp::coordinates(data_geo) <- c("longitude", "latitude")
-  # use same lat/lon reference system
-  sp::proj4string(data_geo) <- "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
+  # Input checks
+  Data.Geo <-
+    check_data(.Data, .latitude = .latitude, .longitude = .longitude)
 
-  # which Land/Bundesland/Kreis/Gemeinde (if any) contains each sighting
-  # store the the name in a list, initialize with NAs
-  empty <- rep(NA_character_, NROW(.Data))
-  res <- list(NAME_0 = empty, NAME_1 = empty, NAME_2 = empty,
-              NAME_3 = empty, NAME_4 = empty)
+  for (i in seq_along(.countries)) {
+    .countries[[i]] <- sp::spTransform(.countries[[i]],
+                                       CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+  }
+
+  # Preallocate result
+  res <- data.table(NAME_0 = rep(NA_character_, NROW(Data.Geo)),
+                    NAME_1 = rep(NA_character_, NROW(Data.Geo)),
+                    NAME_2 = rep(NA_character_, NROW(Data.Geo)),
+                    NAME_3 = rep(NA_character_, NROW(Data.Geo)),
+                    NAME_4 = rep(NA_character_, NROW(Data.Geo)))
+
+  where.na <- rep(TRUE, NROW(Data.Geo))
 
   for (i in .countries) {
-    which_administrative <- sp::over(data_geo, i)
-    where_not_na <- !is.na(which_administrative$NAME_0)
-    if (!is.null(which_administrative$NAME_0[where_not_na])) {
-      res$NAME_0[where_not_na] <- which_administrative$NAME_0[where_not_na]
 
-      # lookup <- tibble::tribble(~"deutsch", ~"englisch",
-      #                           "Deutschland", "Germany",
-      #                           "Italien", "Italy",
-      #                           "Schweiz", "Switzerland",
-      #                           "Österreich", "Austria")
-      # res$NAME_0 <- lookup$deutsch[match(unlist(res$NAME_0), lookup$englisch)]
-      res$NAME_0 <- res$NAME_0
-    }
-    if (!is.null(which_administrative$NAME_1[where_not_na])) {
-      res$NAME_1[where_not_na] <- which_administrative$NAME_1[where_not_na]
-    }
-    if (!is.null(which_administrative$NAME_2[where_not_na])) {
-      res$NAME_2[where_not_na] <- which_administrative$NAME_2[where_not_na]
-    }
-    if (!is.null(which_administrative$NAME_3[where_not_na])) {
-      res$NAME_3[where_not_na] <- which_administrative$NAME_3[where_not_na]
-    }
-    if (!is.null(which_administrative$NAME_4[where_not_na])) {
-      res$NAME_4[where_not_na] <- which_administrative$NAME_4[where_not_na]
-    }
+    geo <- sp::over(Data.Geo[where.na] %>% transform_data, i)
+    vars <- intersect(names(res), names(geo))
+    res[where.na, (vars) := geo[, vars]]
+
+    where.na <- !is.na(res$NAME_0)
   }
-  res
+  setnames(res, paste0("NAME_", 0:4), c("Land", "Bundesland", "Kreis", "Gemeinde", "Ort"))
+  res[Land == "Germany", Land := "Deutschland"]
+  res[]
 }

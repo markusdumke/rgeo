@@ -163,6 +163,31 @@ get_tk25_info <- function(.tk25.number, .quadrant = NULL) {
   df
 }
 
+
+#' Get TK25 information
+#' @inheritParams get_geo_info
+#' @export
+#' @examples
+#' get_tk25_full(.latitude = 47.5, .longitude = 11)
+get_tk25_full <- function(.Data = NULL, .latitude = NULL, .longitude = NULL) {
+
+  Data <- check_data(.Data, .latitude = .latitude, .longitude = .longitude)
+
+  tk25.number <- get_tk25_number(.latitude = Data$latitude, .longitude = Data$longitude)
+  tk25.info <- get_tk25_info(tk25.number, .quadrant = NULL)
+  tk25.quadrant.info <- get_tk25_quadrant_number(.latitude = Data$latitude,
+                                                 .longitude = Data$longitude,
+                                                 .tk25.center.latitude = tk25.info$center.lat,
+                                                 .tk25.center.longitude = tk25.info$center.lng)
+  data.table(
+    TK25 = stringr::str_c(tk25.info$number, " ", tk25.info$name),
+    TK25_Nummer = tk25.info$number,
+    TK25_Quadrant = stringr::str_c(tk25.info$number, " Q", tk25.quadrant.info, " ", tk25.info$name),
+    TK25_Quadrant_Nummer = as.character(tk25.quadrant.info)
+  )
+}
+
+
 # # add this to tests:
 # n <- sample(1:nrow(data), size = 100)
 # for (i in n) {

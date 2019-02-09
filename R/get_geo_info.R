@@ -23,58 +23,28 @@
 #' get_geo_info(.longitude = 11, .latitude = 48, .countries = list(geographic_data_de))
 #' file.remove("GADM_2.8_DEU_adm2.rds")
 get_geo_info <- function(.Data = NULL,
-                         .longitude = NULL,
                          .latitude = NULL,
-                         .countries = list(),
-                      #   .sites = NULL,
-                         ...) {
+                         .longitude = NULL,
+                         .countries = list()) {
 
-  # Input checks
-  checkmate::assert_data_table(.Data, null.ok = TRUE)
-  checkmate::assert_numeric(.longitude, null.ok = TRUE)
-  checkmate::assert_numeric(.latitude, null.ok = TRUE)
-  checkmate::assert_list(.countries)
-  stopifnot(!is.null(.Data) || (!is.null(.latitude) && (!is.null(.longitude))))
-  stopifnot(length(.longitude) == length(.latitude))
-
-  if (is.null(.Data)) {
-    .Data <- data.table(latitude = .latitude, longitude = .longitude)
-  }
+  Data <-
+    check_data(.Data, .latitude = .latitude, .longitude = .longitude)
 
   # Get geographic units
-  geo_info <- get_geographic_data(.Data, .countries = .countries)
+  geo.info <- get_geographic_data(.Data = .Data,
+                                  .latitude = .latitude,
+                                  .longitude = .longitude,
+                                  .countries = .countries)
 
-  Data <- .Data %>%
-    .[, Land := geo_info$NAME_0] %>%
-    .[, Bundesland := geo_info$NAME_1] %>%
-    .[, Kreis := geo_info$NAME_2] %>%
-    .[, Gemeinde := geo_info$NAME_3] %>%
-    .[, Ort := geo_info$NAME_4]
+  # Get naturraum
+  naturraum.info <- get_naturraum(.Data = .Data,
+                                  .latitude = .latitude,
+                                  .longitude = .longitude)
 
   # Get TK25 info
-  tk25.number <- get_tk25_number(.latitude = Data$latitude, .longitude = Data$longitude)
-  tk25.info <- get_tk25_info(tk25.number, .quadrant = NULL)
+  tk25.info <- get_tk25_full(.Data = .Data,
+                             .latitude = .latitude,
+                             .longitude = .longitude)
 
-  Data <- Data %>%
-    .[, TK25 := stringr::str_c(tk25.info$number, " ", tk25.info$name)] %>%
-    .[, TK25_number := tk25.info$number] %>%
-    .[, TK25_Quadrant_number := get_tk25_quadrant_number(.latitude = latitude,
-                                                         .longitude = longitude,
-                                                         .tk25.center.latitude = tk25.info$center.lat,
-                                                         .tk25.center.longitude = tk25.info$center.lng)] %>%
-    .[, TK25_Quadrant := stringr::str_c(tk25.info$number, "_", TK25_Quadrant_number, " ", tk25.info$name)]
-
-  # # Extract site info
-  # if (is.null(.sites)) {
-  #   Data <- Data %>%
-  #     .[, Fundort := NA_character_]
-  # } else {
-  #   Data.Geo <- Data
-  #   sp::coordinates(Data.Geo) <- c("longitude", "latitude")
-  #   sp::proj4string(Data.Geo) <- "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
-  #   Data <- Data %>%
-  #     .[, Fundort := over(Data.Geo, sites)$site]
-  # }
-
-  Data[]
+  cbind(Data, geo.info, tk25.info, naturraum.info)
 }

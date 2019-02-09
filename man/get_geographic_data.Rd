@@ -4,10 +4,17 @@
 \alias{get_geographic_data}
 \title{Get geographic information for coordinates}
 \usage{
-get_geographic_data(.Data, .countries = list())
+get_geographic_data(.Data = NULL, .latitude = NULL,
+  .longitude = NULL, .countries = list())
 }
 \arguments{
-\item{.Data}{A data.table containing latitude and longitude columns.}
+\item{.Data}{A data.table.
+You can either specify an input data.table with columns named \code{longitude}
+and \code{latitude} or pass on two equal-length vectors to \code{.longitude} and \code{.latitude}.}
+
+\item{.latitude}{Numeric vector of latitudes.}
+
+\item{.longitude}{Numeric vector of longitudes.}
 
 \item{.countries}{A list with geographic data from \code{\link[raster:getData]{raster::getData()}}.}
 }
@@ -20,9 +27,9 @@ Get geographic information for coordinates
 }
 \examples{
 library(data.table)
-data <- data.table(latitude = 48, longitude = 11)
+Data <- data.table(latitude = 48:50, longitude = 11:13)
 geographic_data_de <- raster::getData("GADM", country = "DE", level = 2)
-get_geographic_data(data, .countries = list(geographic_data_de))
+get_geographic_data(Data, .countries = list(geographic_data_de))
 file.remove("GADM_2.8_DEU_adm2.rds")
 }
 \seealso{
