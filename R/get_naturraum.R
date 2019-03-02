@@ -16,7 +16,7 @@ get_naturraum <- function(.Data = NULL, .latitude = NULL, .longitude = NULL) {
     check_data(.Data, .latitude = .latitude, .longitude = .longitude) %>%
     transform_data
 
-  naturraum <- sp::spTransform(naturraum, CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+  naturraum <- sp::spTransform(rgeo::naturraum, CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
 
   sp::over(Data.Geo, naturraum) %>%
     setDT %>%
