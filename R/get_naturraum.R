@@ -22,6 +22,6 @@ get_naturraum <- function(.Data = NULL, .latitude = NULL, .longitude = NULL) {
     setDT %>%
     .[, .(HAUPT_NAME, NAME, GROSSLAND)] %>%
     setnames(c("HAUPT_NAME", "NAME", "GROSSLAND"),
-             c("Naturraum_Hauptname", "Naturraum_Name", "Naturraum_Grossland")) %>%
+             c("Naturraum_Hauptname", "Naturraum_Name", "Naturraum_Grosslandschaft")) %>%
     .[]
 }
