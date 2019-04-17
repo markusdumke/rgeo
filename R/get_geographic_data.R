@@ -38,12 +38,13 @@ get_geographic_data <- function(.Data = NULL, .latitude = NULL, .longitude = NUL
   where.na <- rep(TRUE, NROW(Data.Geo))
 
   for (i in .countries) {
+    if (any(where.na)) {
+      geo <- sp::over(Data.Geo[where.na] %>% transform_data, i)
+      vars <- intersect(names(res), names(geo))
+      res[where.na, (vars) := geo[, vars]]
 
-    geo <- sp::over(Data.Geo[where.na] %>% transform_data, i)
-    vars <- intersect(names(res), names(geo))
-    res[where.na, (vars) := geo[, vars]]
-
-    where.na <- !is.na(res$NAME_0)
+      where.na <- is.na(res$NAME_0)
+    }
   }
   setnames(res, paste0("NAME_", 0:4), c("Land", "Bundesland", "Kreis", "Gemeinde", "Ort"))
   res[Land == "Germany", Land := "Deutschland"]
