@@ -1,5 +1,10 @@
 # NEWS
 
+## rgeo 0.5.0
+
+* Changed output of TK25 and TK25_Quadrant to the corresponding number instead of NA
+  if there is no TK25 name (outside of Germany).
+
 ## rgeo 0.4.0
 
 * Changed encoding of naturraum data to UTF-8.

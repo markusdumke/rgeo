@@ -159,7 +159,9 @@ get_tk25_info <- function(.tk25.number, .quadrant = NULL) {
     .quadrant <- ""
   }
 
-  df$full.name <- stringr::str_c( df$number, .quadrant, " ",  df$name)
+  df$full.name <- stringr::str_c(df$number, .quadrant,
+                                 ifelse(is.na(df$name), "", stringr::str_c(" ",  df$name)))
+
   df
 }
 
@@ -180,9 +182,10 @@ get_tk25_full <- function(.Data = NULL, .latitude = NULL, .longitude = NULL) {
                                                  .tk25.center.latitude = tk25.info$center.lat,
                                                  .tk25.center.longitude = tk25.info$center.lng)
   data.table(
-    TK25 = stringr::str_c(tk25.info$number, " ", tk25.info$name),
+    TK25 = tk25.info$full.name,
     TK25_Nummer = tk25.info$number,
-    TK25_Quadrant = stringr::str_c(tk25.info$number, " Q", tk25.quadrant.info, " ", tk25.info$name),
+    TK25_Quadrant = stringr::str_c(tk25.info$number, " Q", tk25.quadrant.info,
+                                   ifelse(is.na(tk25.info$name), "", stringr::str_c(" ", tk25.info$name))),
     TK25_Quadrant_Nummer = as.character(tk25.quadrant.info)
   )
 }
