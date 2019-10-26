@@ -42,9 +42,9 @@ get_geo_info <- function(.Data = NULL,
                                   .longitude = .longitude)
 
   # Get TK25 info
-  tk25.info <- get_tk25_full(.Data = .Data,
-                             .latitude = .latitude,
-                             .longitude = .longitude)
+  tk25.info <- coordinates_to_tk25(.Data = .Data,
+                                   .latitude = .latitude,
+                                   .longitude = .longitude)
 
   cbind(Data, geo.info, tk25.info, naturraum.info)
 }
