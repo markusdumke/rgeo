@@ -1,5 +1,9 @@
 # NEWS
 
+## rgeo 0.7.0
+
+* Bugfix in function `convert_coordinates`.
+
 ## rgeo 0.6.0
 
 * Function `coordinates_to_tk25` and `tk25_to_coordinates` to get tk25 information. Can now handle 1/16 TK25.
