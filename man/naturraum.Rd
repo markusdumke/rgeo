@@ -4,7 +4,9 @@
 \name{naturraum}
 \alias{naturraum}
 \title{Naturräume Bayerns}
-\format{spatialPolygons}
+\format{
+spatialPolygons
+}
 \description{
 Naturräume in Bayern
 }

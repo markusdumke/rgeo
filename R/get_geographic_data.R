@@ -46,7 +46,7 @@ get_geographic_data <- function(.Data = NULL, .latitude = NULL, .longitude = NUL
       where.na <- is.na(res$NAME_0)
     }
   }
-  setnames(res, paste0("NAME_", 0:4), c("Land", "Bundesland", "Kreis", "Gemeinde", "Ort"))
+  setnames(res, paste0("NAME_", 0:4), c("Land", "Bundesland", "Landkreis", "Gemeinde", "Ort"))
   res[Land == "Germany", Land := "Deutschland"]
   res[]
 }

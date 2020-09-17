@@ -4,8 +4,7 @@
 \alias{coordinates_to_tk25}
 \title{Coordinates to TK25}
 \usage{
-coordinates_to_tk25(.longitude = NULL, .latitude = NULL,
-  .Data = NULL)
+coordinates_to_tk25(.longitude = NULL, .latitude = NULL, .Data = NULL)
 }
 \arguments{
 \item{.longitude}{Numeric vector of longitudes.}

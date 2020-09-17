@@ -1,5 +1,9 @@
 # NEWS
 
+## rgeo 0.8.0
+
+* Changed output from "Kreis" to "Landkreis".
+
 ## rgeo 0.7.0
 
 * Bugfix in function `convert_coordinates`.

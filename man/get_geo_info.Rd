@@ -4,8 +4,12 @@
 \alias{get_geo_info}
 \title{Get geographic information for coordinates}
 \usage{
-get_geo_info(.Data = NULL, .latitude = NULL, .longitude = NULL,
-  .countries = list())
+get_geo_info(
+  .Data = NULL,
+  .latitude = NULL,
+  .longitude = NULL,
+  .countries = list()
+)
 }
 \arguments{
 \item{.Data}{A data.table.

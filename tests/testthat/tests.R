@@ -10,7 +10,7 @@ test_that("get_geographic_data", {
 
   Output <- data.table(Land = "Deutschland",
                        Bundesland = "Bayern",
-                       Kreis = "Landsberg am Lech",
+                       Landkreis = "Landsberg am Lech",
                        Gemeinde = NA_character_,
                        Ort = NA_character_)
 
@@ -69,7 +69,7 @@ test_that("get_geo_info", {
                        longitude = 12,
                        Land = "Deutschland",
                        Bundesland = "Bayern",
-                       Kreis = "Landshut",
+                       Landkreis = "Landshut",
                        Gemeinde = NA_character_,
                        Ort = NA_character_,
                        TK25 = "7438 Landshut West",

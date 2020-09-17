@@ -28,3 +28,9 @@ naturraum <- spTransform(naturraum, CRS("+proj=longlat +datum=WGS84 +ellps=WGS84
 naturraum@data <- modify(naturraum@data, enc2utf8)
 
 usethis::use_data(naturraum, overwrite = TRUE)
+
+
+# sp::spTransform(rgeo::naturraum,
+#                 sp::CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+# naturraum <- raster::aggregate(naturraum_by_einheiten, by = "NAME")
+# saveRDS(naturraum, "data/geographic_data/naturraum_bayern.rds")
