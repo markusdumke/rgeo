@@ -1,6 +1,6 @@
 Package: rgeo
 Title: Extract Geographic Information from Coordinates
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: 
     person(given = "Markus",
            family = "Dumke",
