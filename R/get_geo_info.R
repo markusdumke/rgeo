@@ -60,7 +60,7 @@ get_geo_info <- function(.longitude,
   # Get elevation
   if (!is.null(.elevation)) {
     data <-
-      data[, hoehe := raster::extract(.elevation, data, sp = TRUE)]
+      data[, hoehe := raster::extract(.elevation, data[, .(longitude, latitude)], sp = TRUE)]
   }
 
   # Get TK25
