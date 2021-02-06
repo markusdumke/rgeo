@@ -10,7 +10,7 @@ An R package providing helper functions to work with coordinates.
 You can install rgeo with:
 
 ``` r
-remotes::install_github("rgeo")
+remotes::install_github("markusdumke/rgeo")
 ```
 
 ## Example
