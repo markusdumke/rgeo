@@ -7,6 +7,7 @@ output: github_document
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
+  message = FALSE,
   comment = "#>",
   fig.path = "man/figures/README-",
   out.width = "100%"
@@ -15,10 +16,24 @@ knitr::opts_chunk$set(
 
 # rgeo
 
+An R package providing helper functions to work with coordinates. 
+
 ## Installation
 
 You can install rgeo with:
 
 ``` r
 remotes::install_github("rgeo")
+```
+
+## Example
+
+```{r}
+library(rgeo)
+
+get_geo_info(
+  .longitude = 11, .latitude = 48,
+  .naturraum = naturraum_bayern,
+  .boundaries = boundaries_bayern
+)
 ```

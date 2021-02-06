@@ -7,26 +7,28 @@
 #'
 #' @examples
 #' coordinates_to_tk25(11, 48)
-coordinates_to_tk25 <- function(.longitude = NULL, .latitude = NULL, .Data = NULL) {
-  Data <- check_data(.Data, .latitude = .latitude, .longitude = .longitude)
+coordinates_to_tk25 <- function(.longitude = NULL, .latitude = NULL) {
 
-  tk25.number <- get_tk25_number(.latitude = Data$latitude,
-                                 .longitude = Data$longitude)
+  checkmate::assert_numeric(.longitude)
+  checkmate::assert_numeric(.latitude)
+
+  tk25.number <- get_tk25_number(.latitude = .latitude,
+                                 .longitude = .longitude)
   tk25.name <- get_tk25_name(tk25.number)
   tk25.info <- get_tk25_coordinates(tk25.number, .quadrant = NULL)
-  tk25.quadrant.number <- get_tk25_quadrant_number(.latitude = Data$latitude,
-                                                 .longitude = Data$longitude,
-                                                 .tk25.center.latitude = tk25.info$center.lat,
-                                                 .tk25.center.longitude = tk25.info$center.lng)
+  tk25.quadrant.number <- get_tk25_quadrant_number(.latitude = .latitude,
+                                                   .longitude = .longitude,
+                                                   .tk25.center.latitude = tk25.info$center.lat,
+                                                   .tk25.center.longitude = tk25.info$center.lng)
   tk25.quadrant.info <- get_tk25_coordinates(tk25.number, .quadrant = tk25.quadrant.number)
-  tk25.16 <- get_tk25_quadrant_number(.latitude = Data$latitude,
-                                      .longitude = Data$longitude,
+  tk25.16 <- get_tk25_quadrant_number(.latitude = .latitude,
+                                      .longitude = .longitude,
                                       .tk25.center.latitude = tk25.quadrant.info$center.lat,
                                       .tk25.center.longitude = tk25.quadrant.info$center.lng)
   data.table(
-    TK25 = stringr::str_c(tk25.number, " ", tk25.name),
-    TK25_Quadrant = stringr::str_c(tk25.number, " ", tk25.quadrant.number, "0 ", tk25.name),
-    TK25_Viertelquadrant = stringr::str_c(tk25.number, " ", tk25.quadrant.number, tk25.16, " ", tk25.name)
+    tk25 = stringr::str_c(tk25.number, " ", tk25.name),
+    tk25_quadrant = stringr::str_c(tk25.number, " ", tk25.quadrant.number, "0 ", tk25.name),
+    tk25_viertelquadrant = stringr::str_c(tk25.number, " ", tk25.quadrant.number, tk25.16, " ", tk25.name)
   )
 }
 
@@ -42,14 +44,15 @@ coordinates_to_tk25 <- function(.longitude = NULL, .latitude = NULL, .Data = NUL
 tk25_to_coordinates <- function(.tk25, .quadrant = FALSE, .viertelquadrant = FALSE) {
 
   split <- stringr::str_split(.tk25, stringr::fixed(" "))
-  purrr::map_dfr(split,
-                 ~ {
-                   tk25.number <- .x[1]
-                   quadrant <- `if`(isTRUE(.quadrant), stringr::str_sub(.x[2], 1, 1), NULL)
-                   viertelquadrant <- `if`(isTRUE(.viertelquadrant), stringr::str_sub(.x[2], 2, 2), NULL)
+  lapply(split,
+         function(.x) {
+           tk25.number <- .x[1]
+           quadrant <- `if`(isTRUE(.quadrant), stringr::str_sub(.x[2], 1, 1), NULL)
+           viertelquadrant <- `if`(isTRUE(.viertelquadrant), stringr::str_sub(.x[2], 2, 2), NULL)
 
-                   get_tk25_coordinates(tk25.number, quadrant, viertelquadrant)
-                 })
+           get_tk25_coordinates(tk25.number, quadrant, viertelquadrant)
+         }) %>%
+    rbindlist()
 }
 
 

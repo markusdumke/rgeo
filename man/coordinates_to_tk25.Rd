@@ -4,16 +4,12 @@
 \alias{coordinates_to_tk25}
 \title{Coordinates to TK25}
 \usage{
-coordinates_to_tk25(.longitude = NULL, .latitude = NULL, .Data = NULL)
+coordinates_to_tk25(.longitude = NULL, .latitude = NULL)
 }
 \arguments{
-\item{.longitude}{Numeric vector of longitudes.}
+\item{.longitude}{A numeric vector of longitudes.}
 
-\item{.latitude}{Numeric vector of latitudes.}
-
-\item{.Data}{A data.table.
-You can either specify an input data.table with columns named \code{longitude}
-and \code{latitude} or pass on two equal-length vectors to \code{.longitude} and \code{.latitude}.}
+\item{.latitude}{A numeric vector of latitudes.}
 }
 \description{
 Coordinates to TK25

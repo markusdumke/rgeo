@@ -4,17 +4,17 @@
 \alias{convert_coordinates}
 \title{Convert coordinates from Gauss-Krueger to WGS84}
 \usage{
-convert_coordinates(.Data = NULL, .gk.rw = NULL, .gk.hw = NULL)
+convert_coordinates(.gk.rw = NULL, .gk.hw = NULL)
+}
+\arguments{
+\item{.gk.rw}{A numeric vector of Gauss Krueger Rechtswert coordinates.}
+
+\item{.gk.hw}{A numeric vector of Gauss Krueger Hochwert coordinates.}
 }
 \description{
 Convert coordinates from Gauss-Krueger to WGS84
 }
 \examples{
-gk.rw <- 3557875
-gk.hw <- 5541342
-convert_coordinates(.gk.rw = gk.rw, .gk.hw = gk.hw)
+convert_coordinates(.gk.rw = 3557875, .gk.hw = 5541342)
 # lat <- 50.005600; lng <- 9.806272
-
-Data <- data.table(gk.rw = c(3557875, 4454942), gk.hw = c(5541342, 5532305))
-convert_coordinates(Data)
 }

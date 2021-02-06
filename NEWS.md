@@ -1,5 +1,9 @@
 # NEWS
 
+## rgeo 1.0.0
+
+* BREAKING: Update function get_geo_info with completely new version. Removed some functions. Added datasets `boundaries_bayern` and `naturraum_bayern`.
+
 ## rgeo 0.8.0
 
 * Changed output from "Kreis" to "Landkreis".

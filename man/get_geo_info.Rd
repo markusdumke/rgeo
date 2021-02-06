@@ -2,38 +2,40 @@
 % Please edit documentation in R/get_geo_info.R
 \name{get_geo_info}
 \alias{get_geo_info}
-\title{Get geographic information for coordinates}
+\title{Get geographic information for coordinates.}
 \usage{
 get_geo_info(
-  .Data = NULL,
-  .latitude = NULL,
-  .longitude = NULL,
-  .countries = list()
+  .longitude,
+  .latitude,
+  .naturraum = NULL,
+  .boundaries = NULL,
+  .elevation = NULL,
+  .tk25 = TRUE
 )
 }
 \arguments{
-\item{.Data}{A data.table.
-You can either specify an input data.table with columns named \code{longitude}
-and \code{latitude} or pass on two equal-length vectors to \code{.longitude} and \code{.latitude}.}
+\item{.longitude}{A numeric vector of longitudes.}
 
-\item{.latitude}{Numeric vector of latitudes.}
+\item{.latitude}{A numeric vector of latitudes.}
 
-\item{.longitude}{Numeric vector of longitudes.}
+\item{.naturraum}{Optional sf polygon of naturraum data.}
 
-\item{.countries}{A list with geographic data from \code{\link[raster:getData]{raster::getData()}}.}
+\item{.boundaries}{Optional sf polygon of administrative boundaries.}
 
-\item{.sites}{SpatialPolygons object.
-Spatial object to test if points lie inside sites.}
+\item{.elevation}{Optional raster of elevation values.}
+
+\item{.tk25}{Logical value. Should tk25 info be included?}
 }
 \value{
-A data.table with new columns for the geographic informations.
+A data.table with one row per coordinate pair.
 }
 \description{
-\code{get_geo_info} returns geographical information like country, tk25
-from coordinates.
+This functions intersects coordinates with a set of shapefiles.
 }
 \examples{
-geographic_data_de <- raster::getData("GADM", country = "DE", level = 2)
-get_geo_info(.longitude = 11, .latitude = 48, .countries = list(geographic_data_de))
-file.remove("GADM_2.8_DEU_adm2.rds")
+get_geo_info(
+  .longitude = 11, .latitude = 48,
+  .naturraum = naturraum_bayern,
+  .boundaries = boundaries_bayern
+)
 }

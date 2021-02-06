@@ -1,50 +1,76 @@
-#' Get geographic information for coordinates
+#' Get geographic information for coordinates.
 #'
-#' `get_geo_info` returns geographical information like country, tk25
-#' from coordinates.
+#' This functions intersects coordinates with a set of shapefiles.
 #'
-#' @param .Data A data.table.
-#'        You can either specify an input data.table with columns named `longitude`
-#'        and `latitude` or pass on two equal-length vectors to `.longitude` and `.latitude`.
-#' @param .longitude Numeric vector of longitudes.
-#' @param .latitude Numeric vector of latitudes.
-#' @param .sites SpatialPolygons object.
-#'        Spatial object to test if points lie inside sites.
-#' @inheritParams get_geographic_data
+#' @param .longitude A numeric vector of longitudes.
+#' @param .latitude A numeric vector of latitudes.
+#' @param .naturraum Optional sf polygon of naturraum data.
+#' @param .boundaries Optional sf polygon of administrative boundaries.
+#' @param .elevation Optional raster of elevation values.
+#' @param .tk25 Logical value. Should tk25 info be included?
 #'
-#' @return A data.table with new columns for the geographic informations.
-#'
+#' @return A data.table with one row per coordinate pair.
 #' @export
-#' @import data.table
-#' @importFrom magrittr "%>%"
 #'
 #' @examples
-#' geographic_data_de <- raster::getData("GADM", country = "DE", level = 2)
-#' get_geo_info(.longitude = 11, .latitude = 48, .countries = list(geographic_data_de))
-#' file.remove("GADM_2.8_DEU_adm2.rds")
-get_geo_info <- function(.Data = NULL,
-                         .latitude = NULL,
-                         .longitude = NULL,
-                         .countries = list()) {
+#' get_geo_info(
+#'   .longitude = 11, .latitude = 48,
+#'   .naturraum = naturraum_bayern,
+#'   .boundaries = boundaries_bayern
+#' )
+get_geo_info <- function(.longitude,
+                         .latitude,
+                         .naturraum = NULL,
+                         .boundaries = NULL,
+                         .elevation = NULL,
+                         .tk25 = TRUE) {
 
-  Data <-
-    check_data(.Data, .latitude = .latitude, .longitude = .longitude)
+  checkmate::assert_numeric(.longitude)
+  checkmate::assert_numeric(.latitude)
 
-  # Get geographic units
-  geo.info <- get_geographic_data(.Data = .Data,
-                                  .latitude = .latitude,
-                                  .longitude = .longitude,
-                                  .countries = .countries)
+  coords <-
+    sf::st_sfc(
+      lapply(
+        seq_along(.longitude), function(i) {
+          sf::st_point(c(.longitude[i], .latitude[i]))
+        }),
+      crs = "+proj=longlat +datum=WGS84 +no_defs")
+
+  data <- data.table(longitude = .longitude,
+                     latitude = .latitude)
+
+  # Get administrative boundaries
+  if (!is.null(.boundaries)) {
+    boundaries.info <-
+      .boundaries[as.integer(sf::st_intersects(coords, .boundaries)), ] %>%
+      setDT() %>%
+      .[, geometry := NULL]
+    data <- cbind(data, boundaries.info)
+  }
 
   # Get naturraum
-  naturraum.info <- get_naturraum(.Data = .Data,
-                                  .latitude = .latitude,
-                                  .longitude = .longitude)
+  if (!is.null(.naturraum)) {
+    naturraum.info <-
+      .naturraum[as.integer(sf::st_intersects(coords, .naturraum)), ] %>%
+      setDT() %>%
+      .[, geometry := NULL]
+    data <- cbind(data, naturraum.info)
+  }
 
-  # Get TK25 info
-  tk25.info <- coordinates_to_tk25(.Data = .Data,
-                                   .latitude = .latitude,
-                                   .longitude = .longitude)
+  # Get elevation
+  if (!is.null(.elevation)) {
+    data <-
+      data[, hoehe := raster::extract(.elevation, data, sp = TRUE)]
+  }
 
-  cbind(Data, geo.info, tk25.info, naturraum.info)
+  # Get TK25
+  if (.tk25) {
+    tk25.info <- coordinates_to_tk25(.latitude = .latitude,
+                                     .longitude = .longitude)
+    data <- cbind(data, tk25.info)
+  }
+
+  data %>%
+    setnames(stringr::str_to_lower) %>%
+    .[]
 }
