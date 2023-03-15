@@ -25,10 +25,16 @@ coordinates_to_tk25 <- function(.longitude = NULL, .latitude = NULL) {
                                       .longitude = .longitude,
                                       .tk25.center.latitude = tk25.quadrant.info$center.lat,
                                       .tk25.center.longitude = tk25.quadrant.info$center.lng)
+  tk25.16.info <- get_tk25_coordinates(tk25.number, .quadrant = tk25.quadrant.number, .q16 = tk25.16)
+  tk25.64 <- get_tk25_quadrant_number(.latitude = .latitude,
+                                      .longitude = .longitude,
+                                      .tk25.center.latitude = tk25.16.info$center.lat,
+                                      .tk25.center.longitude = tk25.16.info$center.lng)
   data.table(
     tk25 = stringr::str_c(tk25.number, " ", tk25.name),
     tk25_quadrant = stringr::str_c(tk25.number, " ", tk25.quadrant.number, "0 ", tk25.name),
-    tk25_viertelquadrant = stringr::str_c(tk25.number, " ", tk25.quadrant.number, tk25.16, " ", tk25.name)
+    tk25_viertelquadrant = stringr::str_c(tk25.number, " ", tk25.quadrant.number, tk25.16, " ", tk25.name),
+    tk25_64 = stringr::str_c(tk25.number, " ", tk25.quadrant.number, tk25.16, tk25.64, " ", tk25.name)
   )
 }
 

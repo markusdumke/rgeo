@@ -4,7 +4,8 @@ test_that("coordinates_to_tk25", {
     data.table(
       tk25 = "7932 Utting am Ammersee",
       tk25_quadrant = "7932 30 Utting am Ammersee",
-      tk25_viertelquadrant = "7932 33 Utting am Ammersee")
+      tk25_viertelquadrant = "7932 33 Utting am Ammersee",
+      tk25_64 = "7932 333 Utting am Ammersee")
   )
 })
 
@@ -14,7 +15,8 @@ test_that("coordinates_to_tk25", {
     data.table(
       tk25 = c("7932 Utting am Ammersee", "6938 Regensburg"),
       tk25_quadrant = c("7932 30 Utting am Ammersee", "6938 30 Regensburg"),
-      tk25_viertelquadrant = c("7932 33 Utting am Ammersee", "6938 33 Regensburg"))
+      tk25_viertelquadrant = c("7932 33 Utting am Ammersee", "6938 33 Regensburg"),
+      tk25_64 = c("7932 333 Utting am Ammersee", "6938 333 Regensburg"))
   )
 })
 
