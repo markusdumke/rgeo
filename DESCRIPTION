@@ -1,6 +1,6 @@
 Package: rgeo
 Title: Extract Geographic Information from Coordinates
-Version: 1.1.0
+Version: 1.2.0
 Authors@R: 
     person(given = "Markus",
            family = "Dumke",
@@ -11,19 +11,18 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Config/testthat/edition: 3
 Depends:
     R (>= 3.5.0)
 Imports: 
     checkmate,
     data.table,
-    lest,
     magrittr,
-    raster,
-    rgdal,
     sf,
-    sp,
-    stringr
+    stringr,
+    terra
 Suggests:
+    sp,
+    raster,
     testthat

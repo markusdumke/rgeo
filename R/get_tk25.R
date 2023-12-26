@@ -79,11 +79,11 @@ get_tk25_quadrant_number <- function(.latitude, .longitude,
 
 
 
-  lest::case_when(
-    .latitude - .tk25.center.latitude >= 0 & .longitude >= .tk25.center.longitude ~ 2,
-    .latitude - .tk25.center.latitude < 0 & .longitude >= .tk25.center.longitude ~ 4,
-    .latitude - .tk25.center.latitude >= 0 & .longitude < .tk25.center.longitude ~ 1,
-    .latitude - .tk25.center.latitude < 0 & .longitude < .tk25.center.longitude ~ 3
+  fcase(
+    .latitude - .tk25.center.latitude >= 0 & .longitude >= .tk25.center.longitude, 2,
+    .latitude - .tk25.center.latitude < 0 & .longitude >= .tk25.center.longitude, 4,
+    .latitude - .tk25.center.latitude >= 0 & .longitude < .tk25.center.longitude, 1,
+    .latitude - .tk25.center.latitude < 0 & .longitude < .tk25.center.longitude, 3
   )
 }
 
@@ -104,24 +104,24 @@ get_tk25_coordinates <- function(.tk25.number, .quadrant = NULL, .q16 = NULL) {
   if (!is.null(.quadrant)) {
     quadrant <- as.numeric(.quadrant)
     x <- 4
-    lng.center <- lest::case_when(
-      quadrant %in% c(2, 4) ~ lng.center + dat$lng.dif / x,
-      quadrant %in% c(1, 3) ~ lng.center - dat$lng.dif / x
+    lng.center <- fcase(
+      quadrant %in% c(2, 4), lng.center + dat$lng.dif / x,
+      quadrant %in% c(1, 3), lng.center - dat$lng.dif / x
     )
-    lat.center <- lest::case_when(
-      quadrant %in% c(1, 2) ~ lat.center + dat$lat.dif / x,
-      quadrant %in% c(3, 4) ~ lat.center - dat$lat.dif / x
+    lat.center <- fcase(
+      quadrant %in% c(1, 2), lat.center + dat$lat.dif / x,
+      quadrant %in% c(3, 4), lat.center - dat$lat.dif / x
     )
     if (!is.null(.q16)) {
       q16 <- as.numeric(.q16)
       x <- 8
-      lng.center <- lest::case_when(
-        q16 %in% c(2, 4) ~ lng.center + dat$lng.dif / x,
-        q16 %in% c(1, 3) ~ lng.center - dat$lng.dif / x
+      lng.center <- fcase(
+        q16 %in% c(2, 4), lng.center + dat$lng.dif / x,
+        q16 %in% c(1, 3), lng.center - dat$lng.dif / x
       )
-      lat.center <- lest::case_when(
-        q16 %in% c(1, 2) ~ lat.center + dat$lat.dif / x,
-        q16 %in% c(3, 4) ~ lat.center - dat$lat.dif / x
+      lat.center <- fcase(
+        q16 %in% c(1, 2), lat.center + dat$lat.dif / x,
+        q16 %in% c(3, 4), lat.center - dat$lat.dif / x
       )
     }
   }

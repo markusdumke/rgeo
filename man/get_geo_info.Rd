@@ -22,7 +22,7 @@ get_geo_info(
 
 \item{.boundaries}{Optional sf polygon of administrative boundaries.}
 
-\item{.elevation}{Optional raster of elevation values.}
+\item{.elevation}{Optional terra::rast of elevation values.}
 
 \item{.tk25}{Logical value. Should tk25 info be included?}
 }

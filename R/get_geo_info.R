@@ -6,7 +6,7 @@
 #' @param .latitude A numeric vector of latitudes.
 #' @param .naturraum Optional sf polygon of naturraum data.
 #' @param .boundaries Optional sf polygon of administrative boundaries.
-#' @param .elevation Optional raster of elevation values.
+#' @param .elevation Optional terra::rast of elevation values.
 #' @param .tk25 Logical value. Should tk25 info be included?
 #'
 #' @return A data.table with one row per coordinate pair.
@@ -59,8 +59,9 @@ get_geo_info <- function(.longitude,
 
   # Get elevation
   if (!is.null(.elevation)) {
+    # Extract elevation values with terra
     data <-
-      data[, hoehe := raster::extract(.elevation, data[, .(longitude, latitude)], sp = TRUE)]
+      data[, hoehe := terra::extract(.elevation, data[, .(longitude, latitude)])$elevation]
   }
 
   # Get TK25

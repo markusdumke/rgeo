@@ -2,7 +2,7 @@
 % Please edit documentation in R/convert_coordinates.R
 \name{convert_coordinates}
 \alias{convert_coordinates}
-\title{Convert coordinates from Gauss-Krueger to WGS84}
+\title{Convert coordinates from Gauss-Krueger to WGS84.}
 \usage{
 convert_coordinates(.gk.rw = NULL, .gk.hw = NULL)
 }
@@ -12,9 +12,9 @@ convert_coordinates(.gk.rw = NULL, .gk.hw = NULL)
 \item{.gk.hw}{A numeric vector of Gauss Krueger Hochwert coordinates.}
 }
 \description{
-Convert coordinates from Gauss-Krueger to WGS84
+Convert coordinates from Gauss-Krueger to WGS84.
 }
 \examples{
 convert_coordinates(.gk.rw = 3557875, .gk.hw = 5541342)
-# lat <- 50.005600; lng <- 9.806272
+# lat <- 50.0056; lng <- 9.806289
 }
